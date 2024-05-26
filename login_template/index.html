@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login and Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="task1.css">
+</head>
+<body>
+
+<div class="login-reg-panel">
+    <div class="white-panel">
+        <div class="login-show">
+            <h2>LOGIN</h2>
+            <form id="loginForm">
+                <input type="text" placeholder="Email" name="email" required>
+                <input type="password" placeholder="Password" name="password" required>
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember Me</label>
+                </div>
+                <input id="ok" type="submit" value="OK">
+                <input id="cancel" type="button" value="Cancel">
+            </form>
+        </div>
+    </div>
+</div>
+<br></br><br><br><br><br>
+<hr class="m-0">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // JavaScript for button interactions
+
+    function findInputs() {
+        return document.getElementById("loginForm").getElementsByTagName("input");
+    }
+
+    function validateInputs() {
+        var inputs = findInputs();
+        var email = inputs.namedItem("email").value;
+        var password = inputs.namedItem("password").value;
+
+        if (email === "" || password === "") {
+            alert("Please fill in both email and password fields.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function okClicked() {
+        var isValid = validateInputs();
+        if (isValid) {
+            login();
+        }
+    }
+
+    function login() {
+        var rememberMeChecked = document.getElementById("rememberMe").checked;
+
+        if (rememberMeChecked) {
+            alert("Logged in successfully with Remember Me marked as Set");
+        } else {
+            alert("Logged in Successfully");
+        }
+    }
+
+    function clear() {
+        var inputs = findInputs();
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type !== "checkbox") {
+                inputs[i].value = "";
+            }
+        }
+    }
+
+    function cancelClicked() {
+        clear();
+        alert("Cancel is clicked");
+    }
+</script>
+<!-- Footer -->
+<footer class="text-light text-center py-3" style="background-color: rgb(217, 54, 54)">
+    <div class="container">
+        <p Style="color:white">&copy; 2023 Online Forum. All rights reserved by Maira.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Profile</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #333;
+        }
+        /* Bio section */
+        #bio {
+            margin: 20px 0;
+            text-align: center;
+        }
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+        /* Courses section */
+        #courseTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #courseTable th,
+        #courseTable td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #courseTable th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #courseActions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #courseActions button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #courseActions button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Interests section */
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Student Profile</h1>
+
+    <p id="bio">Bio: This is a student profile. I ma a software engineer undergraduate.</p>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqia4wLF7ZCjIMeghbuE8pkNFeqk0OylCI7LBDLvyw_g&s"
+        alt="Student Image">
+    <div id="courseActions">
+        <button onclick="search()">Search</button>
+        <button onclick="addNewCourse()">Add New Course</button>
+        <button onclick="updateCourse()">Update Course</button>
+        <button onclick="removeCourse()">Remove Course</button>
+    </div>
+    <table id="courseTable">
+        <h2>Courses Taken</h2>
+        <thead>
+            <tr>
+                <th>Course Id</th>
+                <th>Course Name</th>
+                <th>Credit Hours</th>
+                <th>Year Taken</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="row-CS-10" class="row">
+                <td>CS-10</td>
+                <td>Web Engineer</td>
+                <td>16</td>
+                <td>2023</td>
+            </tr>
+            <tr id="row-CS-2" class="row">
+                <td>CS-2</td>
+                <td>Programming fundamentals</td>
+                <td>16</td>
+                <td>2021</td>
+            </tr>
+            <tr id="row-CS-3" class="row">
+                <td>CS-3</td>
+                <td>Into to Software</td>
+                <td>18</td>
+                <td>2022</td>
+            </tr>
+        </tbody>
+    </table>   
+    <h2>Interests</h2>
+    <p>Explore more about our university: <a href="https://www.uitu.edu.pk">UIT University</a></p>
+
+    <script>
+   function removeCourse() {
+            const courseId = prompt('Enter Course # to delete: ');
+            const courseToDelete = document.getElementById('row-' + courseId); 
+            if (courseToDelete) {
+                const body = document.querySelector('tbody');
+                body.removeChild(courseToDelete);
+            } else {
+                alert('Course not found or invalid input.');
+            } }
+    function search() {
+            const courseIdToSearch = prompt('Enter the Course ID to search and highlight:');
+            const tableRows = document.querySelectorAll('#courseTable tbody tr');
+
+            for (const row of tableRows) {
+                const courseId = row.querySelector('td:first-child').textContent;
+
+                if (courseId === courseIdToSearch) {
+                    row.style.backgroundColor = '#ffcc00';
+                } }  }
+    function addNewCourse() {
+            const courseId = prompt('Enter course ID:').toUpperCase();
+            const courseName = prompt('Enter course Name:');
+            const creditHours = prompt('Enter Credit Hours:');
+            const yearTaken = prompt('Enter Year Taken:');
+            const tableBody = document.querySelector('#courseTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${courseId}</td>
+                <td>${courseName}</td>
+                <td>${creditHours}</td>
+                <td>${yearTaken}</td>
+            `;
+            tableBody.appendChild(newRow);
+        }
+        function updateCourse() {
+            const courseInput = prompt('Enter the Course ID, Course Name, Credit Hours, and Year Taken to update:');
+            const courseArr = courseInput.split(',');
+
+            if (courseArr.length === 4) {
+                const courseId = courseArr[0].trim().toUpperCase(); // Convert to uppercase
+                const courseName = courseArr[1].trim();
+                const creditHours = courseArr[2].trim();
+                const yearTaken = courseArr[3].trim();
+                
+                const courseToUpdate = document.getElementById('row-' + courseId); // Use 'row ' with space
+
+                if (courseToUpdate) {
+                    courseToUpdate.querySelector('td:nth-child(2)').textContent = courseName;
+                    courseToUpdate.querySelector('td:nth-child(3)').textContent = creditHours;
+                    courseToUpdate.querySelector('td:nth-child(4)').textContent = yearTaken;
+                } else {
+                    alert('Course not found.');
+                }
+            } else {
+                alert('Invalid input. Please enter in the format "Course ID, Course Name, Credit Hours, Year Taken".');
+            }
+        }
+    </script>
+</body>
+<br><br>
+<footer class="text-light text-center py-3" style="background-color: rgb(40, 71, 129)">
+    <div class="container">
+        <p>&copy; 2023 Online Forum. All rights reserved by Maira.</p>
+    </div>
+</footer>
+
+</html>

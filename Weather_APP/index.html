@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Weather App</h1>
+        <div class="form-group row justify-content-center">
+            <input type="text" class="form-control col-6" id="searchInput" placeholder="Enter city name">
+            <button class="btn btn-primary col-2" id="searchButton">Search</button>
+        </div>
+        <div class="row weather-cards mt-4">
+            <!-- Weather card content will be populated dynamically using JavaScript -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery for AJAX -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to fetch weather data
+            async function fetchWeather(city, cityName) {
+                try {
+                    const url = `https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=24&location=${city}&contentType=csv&unitGroup=us&shortColumnNames=0`;
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        headers: {
+                            'X-RapidAPI-Key': 'a28a4afdf7msh72a2474cb7d6064p1adafdjsn595825a26b31',
+                            'X-RapidAPI-Host': 'visual-crossing-weather.p.rapidapi.com'
+                        },
+                        success: function (data) {
+                            // Parse the CSV data
+                            const csvData = data.split('\n');
+                            const headers = csvData[0].split(',');
+
+                            // Extract relevant information
+                            const date = csvData[1].split(',')[1];
+                            const temperature = csvData[1].split(',')[9];
+                            const conditions = csvData[1].split(',')[22];
+
+                            // Define the city name
+                            let weatherIcon = 'https://source.unsplash.com/300x300/?cloud'; // Default cloud image
+
+                            if (conditions.toLowerCase().includes('clear')) {
+                                weatherIcon = 'https://source.unsplash.com/300x300/?sunny'; // Change the image URL for clear conditions
+                            }
+
+                            // Populate the weather card
+                            const weatherCards = document.querySelector('.weather-cards');
+                            weatherCards.innerHTML += `
+                                <div class="col-4">
+                                    <div class="card">
+                                        <h5 class="card-header">${cityName}</h5>
+                                        <div class="card-body">
+                                            <img src="${weatherIcon}" height=300px>
+                                            <p class="card-text">Date: ${date}</p>
+                                            <p class="card-text">Temperature: ${temperature}°F</p>
+                                            <p class="card-text">Conditions: ${conditions}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        },
+                        error: function (error) {
+                            // Display an error message on the page
+                            const weatherCard = document.querySelector('.weather-card');
+                            weatherCard.innerHTML = `<p class="alert alert-danger">Error: ${error.responseText}</p>`;
+                        }
+                    });
+                } catch (error) {
+                    // Handle errors
+                    console.error(error);
+                }
+            }
+            // Load weather data for Karachi, Lahore, and Islamabad on page load
+            fetchWeather("Karachi%2CPK", "Karachi");
+            fetchWeather("Lahore%2CPK", "Lahore");
+            fetchWeather("Islamabad%2CPK", "Islamabad");
+
+            // Handle search button click event
+            document.getElementById("searchButton").addEventListener("click", function () {
+                const cityName = document.getElementById("searchInput").value;
+                if (cityName) {
+                        
+                    const newPageUrl = `weather.html?city=${encodeURIComponent(cityName)}`;
+
+                    // Use JavaScript to open the new page in a new browser window or tab
+                    window.open(newPageUrl, "_blank");
+                    // Store the searched city name in local storage
+                    localStorage.setItem("cityName", cityName);
+                } else {
+                    // Display an error message on the page
+                    const weatherCard = document.querySelector('.weather-card');
+                    weatherCard.innerHTML = "<p class='alert alert-warning'>Please enter a city name.</p>";
+                }
+                    
+            });
+        });
+    </script>
+</body>
+</html>

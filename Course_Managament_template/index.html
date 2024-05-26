@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Login and Registration</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="task1.css"> 
+    </head>
+</head>
+<body>
+    <h1>Students Data </h1>
+    <div class="button-container">
+    <br><br><br>
+    <input type="button" value="Add New Student" onclick="addNewStudent();" />
+    <input type="button" value="Delete Student" onclick="deleteStudent();" />
+    <input type="button" value="update Student Batch" onclick="updateStudentBatch();" />
+    </div>   
+    <table id="studentTable" class="students">
+        <thead>
+            <tr>
+                <th>Student #</th>
+                <th>Student Name</th>
+                <th>Batch</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="row1" class="row">
+                <td>Student 1</td>
+                <td>Abdul Hafeez</td>
+                <td>2021</td>
+                <td><button onclick="updateStudent('row1')">Update</button></td>
+            </tr>
+            <tr id="row2" class="row">
+                <td>Student 2</td>
+                <td>Arsalan Latif</td>
+                <td>2019</td>
+                <td><button onclick="updateStudent('row2')">Update</button></td>
+            </tr>
+            <tr id="row3" class="row">
+                <td>Student 3</td>
+                <td>Muzammil Ali</td>
+                <td>2018</td>
+                <td><button onclick="updateStudent('row3')">Update</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <br> 
+
+    <script> function addNewStudent() {
+            const body = document.querySelector('tbody'); 
+            const row = document.createElement('tr'); 
+            const tdStudentID = document.createElement('td');
+             const tdStudentName = document.createElement('td'); 
+             const tdBatch = document.createElement('td'); 
+             const tdAction = document.createElement('td'); 
+             const studentId = (Math.round(Math.random() * 100)) + 4; 
+             const studentName = "New Student " + studentId; 
+             const batch = (Math.round(Math.random() * 5)) + 2021;
+
+            row.id = 'row' + studentId; tdStudentID.innerHTML = 'Student ' + studentId; tdStudentName.innerHTML = studentName; tdBatch.innerHTML = batch; tdAction.innerHTML = '<button onclick="updateStudent(\'' + row.id + '\')">Update</button>'; row.appendChild(tdStudentID); row.appendChild(tdStudentName); row.appendChild(tdBatch); row.appendChild(tdAction); body.appendChild(row);
+        }
+
+        function deleteStudent() {
+            const studentId = prompt('Please enter Student # to delete:');
+            const row = document.getElementById('row' + studentId);
+
+            if (row) {
+                const body = document.querySelector('tbody');
+                body.removeChild(row);
+            }
+            else {
+                alert('Student not found or invalid input.');
+            }
+        }
+
+        function updateStudent(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) { // Prompt the user to enter updated student data 
+                const updatedName = prompt('Enter updated student name:');
+                const updatedBatch = prompt('Enter updated batch:');
+
+
+                // Update the table cell values 
+                row.querySelector('td:nth-child(2)').textContent = updatedName;
+                row.querySelector('td:nth-child(3)').textContent = updatedBatch;
+            } else { alert('Student not found or invalid input.'); }
+        }
+
+
+        function updateStudentBatch() {
+            const usertext = prompt('Please enter Student # and new batch (e.g., "2, 2022") to update:');
+            const usertextArr = usertext.split(',');
+
+            if (usertextArr.length === 2) {
+                const studentId = usertextArr[0].trim();
+                const newBatch = usertextArr[1].trim();
+                const row = document.getElementById('row' + studentId);
+
+                if (row) {
+                    row.querySelector('td:nth-child(3)').textContent = newBatch;
+                } else {
+                    alert('Student not found.');
+                }
+            } else {
+                alert('Invalid input. Please enter in the format "Student #, New Batch".');
+            }
+        }
+
+    </script>
+</body>
+
+</html>
+
